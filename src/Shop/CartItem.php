@@ -8,7 +8,7 @@ use Planet\InterviewChallenge\App;
 
 class CartItem extends Exception
 {
-		const MODE_NO_LIMIT = 0;
+		const MODE_NO_LIMIT = -2;
 
 		const MODE_HOUR = 1;
 
@@ -26,22 +26,28 @@ class CartItem extends Exception
 		{
 		    switch ($mode) {
                 case self::MODE_NO_LIMIT:
-                    $this->available_at = -2;
+                    $this->available_at = self::MODE_NO_LIMIT;
                     break;
                 case self::MODE_HOUR:
-                    $this->available_at = strtotime('+1 hour');
+                    $this->available_at = strtotime('+' . ($modifier ?: self::MODE_HOUR) . ' hour');
                     break;
                 case self::MODE_MINUTE:
-                    $this->available_at = strtotime('+' . $modifier . ' minutes');
+                    $this->available_at = strtotime('+' . ($modifier ?: self::MODE_MINUTE) . ' minutes');
                     break;
                 case self::MODE_SECONDS:
-                    $this->available_at = strtotime('+' . $modifier . ' seconds');
+                    $this->available_at = strtotime('+' . ($modifier ?: self::MODE_SECONDS) . ' seconds');
                     break;
 		    }
 		    $this->price = $price;
 		}
 
-		public function isAvailable(): ?bool
+
+        /**
+         * Check if the item is available
+         *
+         * @return bool|null
+         */
+        public function isAvailable(): ?bool
 		{
 		    return $this->available_at <= time();
 		}
@@ -57,7 +63,11 @@ class CartItem extends Exception
 		    return '{"price":' . $this->price . ',"availableAt":'.$this->available_at.'}';
 		}
 
-		public function display(): string
+        /**
+         * @return string
+         * @throws \Smarty\Exception
+         */
+        public function display(): string
 		{
 		    App::smarty()->assign('price', $this->price);
 		    App::smarty()->assign('availableAt', $this->available_at);
