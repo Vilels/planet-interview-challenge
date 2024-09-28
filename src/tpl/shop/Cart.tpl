@@ -1,3 +1,4 @@
+{* Smarty *}
 <div id="Cart">
   <strong>Cart ({$items|count} items):</strong>
   <ul>

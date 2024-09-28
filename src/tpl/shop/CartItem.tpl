@@ -1,3 +1,4 @@
+{* Smarty *}
 {$price}
 {if $available_at eq -2}
     (always available)

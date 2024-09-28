@@ -22,6 +22,12 @@ class Cart
         }
     }
 
+    /**
+     * Extract the item cart mode
+     *
+     * @param $value
+     * @return int|null
+     */
     private function valueToMode($value): ?int
     {
         if ($value === 'never') {
@@ -45,6 +51,12 @@ class Cart
         return null;
     }
 
+    /**
+     * Extract the item cart modifier
+     *
+     * @param $value
+     * @return int|null
+     */
     private function valueToModifier($value): ?int
     {
         if ($value === 'never') {
