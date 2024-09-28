@@ -1,2 +1,5 @@
 /vendor/
 *~
+/tmp
+/.idea
+/.phpunit.result.cache

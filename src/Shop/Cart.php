@@ -17,8 +17,7 @@ class Cart
         $this->items = [];
 
         $params = json_decode($_GET['items'] ?? '[]');
-
-        while ($item = each($params)) {
+        foreach ($params as $item){
             $this->addItem(new CartItem((int)$item['value']->price, $this->valueToMode($item['value']->expires, $modifier), $modifier));
         }
     }
