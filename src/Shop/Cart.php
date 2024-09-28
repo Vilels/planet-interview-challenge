@@ -17,22 +17,40 @@ class Cart
         $this->items = [];
 
         $params = json_decode($_GET['items'] ?? '[]');
-        foreach ($params as $item){
-            $this->addItem(new CartItem((int)$item['value']->price, $this->valueToMode($item['value']->expires, $modifier), $modifier));
+        foreach ($params as $key=>$item){
+            $this->addItem(new CartItem((int)$item->price, $this->valueToMode($item->expires), $this->valueToModifier($item->expires)));
         }
     }
 
-    private function valueToMode($value, &$modifier): int {
+    private function valueToMode($value): ?int
+    {
+        if ($value === 'never') {
+            return CartItem::MODE_NO_LIMIT;
+        }else{
+            $unit = preg_replace('/\d+/', '', $value);
+            switch ($unit){
+                case "hour":
+                case "hours":
+                    return CartItem::MODE_HOUR;
+                case "min":
+                case "mins":
+                    return CartItem::MODE_MINUTE;
+                case "second":
+                case "seconds":
+                    return CartItem::MODE_SECONDS;
 
-        if ($newValue = $value) {
-            if ($value === 'never') {
-                return CartItem::MODE_NO_LIMIT;
             }
+        }
 
-            if ($value === '60min') {
-                $modifier = 60;
-                return CartItem::MODE_SECONDS;
-            }
+        return null;
+    }
+
+    private function valueToModifier($value): ?int
+    {
+        if ($value === 'never') {
+            return null;
+        }else{
+            return intval($value);
         }
     }
 

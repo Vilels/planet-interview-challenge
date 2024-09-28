@@ -97,7 +97,23 @@ After these changes and after changing the test to use the new method name, the 
 
 ##### CartTest
 
+This class also has one single test. To make it pass, I only changed the "$expected" variable to use the new "avilableAt" format instead of "expires_at".
 
+I used the JSON default convention to name the variable in the template section.
 
+#### Functional tests
 
+The single functional test presented was written with codeception. I never worked with codeception, but the test seems very intuitive.
+
+I started by reading the [codeception documentation](https://codeception.com/docs/GettingStarted). When I tried to run the command "php vendor/bin/codecept run --steps" I got an error caused by the written tests because the "FunctionalTester" class was missing. After googling, I found a suggestion at [StackOverflow](https://stackoverflow.com/questions/36322580/symfony-codeception-run-errors) to run the "codecept build" command.
+
+So after running the "php vendor/bin/codecept build" command, the file was generated, and I was able to run the test.
+
+Firstly, the error was on the line "$I->see('Cart (0 items):');". I was not understanding what could be doing this, since when I accessed the index page I could see the expected tests. I then ran the test in debug mode "php vendor/bin/codecept run --steps --debug" and found that the tests weren't able to access the index page since the request was returning a 404 error.
+
+After a quick analysis, I found that the problem was with the test configuration .yml file, the configuration was intended to use "http://127.0.0.1:80" as the default application url, since I was serving the application through port 8000 instead of 80, I changed the configuration file.
+
+After that, the simulate session part of the tests was causing the test to fail, so I copied the [url](http://localhost:8000/?items=[{"price"%3A123%2C"expires"%3A"never"}%2C+{"price"%3A200%2C"expires"%3A"60min"}]) to the browser to figure out the problem. The error was on the "Cart" constructor, I changed the constructor in order to work. I had to do several changes in this class since the "$modifier" was not taken into consideration, so I developed two functions, one to extract the unit and value of the expired/available creation timestamp for the CartItem.
+
+And after that, I added an if statement on the template file of the CartItem to be able to show different messages in case the item mode is MODE_NO_LIMIT.
 

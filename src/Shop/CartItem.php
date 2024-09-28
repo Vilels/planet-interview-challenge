@@ -55,7 +55,6 @@ class CartItem extends Exception
        /**
         * Returns the state representation of the object.
         *
-        * @param int $format Constant from the class CartItem
         * @return string|object State representation of the class.
         */
 		public function getState(): string
@@ -70,7 +69,7 @@ class CartItem extends Exception
         public function display(): string
 		{
 		    App::smarty()->assign('price', $this->price);
-		    App::smarty()->assign('availableAt', $this->available_at);
+		    App::smarty()->assign('available_at', $this->available_at);
 
 		    return App::smarty()->fetch('shop/CartItem.tpl');
 		}
