@@ -96,8 +96,8 @@ class Cart
     {
         $objectStates = '[';
 
-        while ($item = each($this->items)) {
-            $objectStates .= $item['value']->getState() . ',';
+        foreach ($this->items as $item) {
+            $objectStates .= $item->getState() . ',';
         }
         $objectStates = substr($objectStates, 0, -1);
         return $objectStates . ']';

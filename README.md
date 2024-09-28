@@ -113,7 +113,28 @@ Firstly, the error was on the line "$I->see('Cart (0 items):');". I was not unde
 
 After a quick analysis, I found that the problem was with the test configuration .yml file, the configuration was intended to use "http://127.0.0.1:80" as the default application url, since I was serving the application through port 8000 instead of 80, I changed the configuration file.
 
-After that, the simulate session part of the tests was causing the test to fail, so I copied the [url](http://localhost:8000/?items=[{"price"%3A123%2C"expires"%3A"never"}%2C+{"price"%3A200%2C"expires"%3A"60min"}]) to the browser to figure out the problem. The error was on the "Cart" constructor, I changed the constructor in order to work. I had to do several changes in this class since the "$modifier" was not taken into consideration, so I developed two functions, one to extract the unit and value of the expired/available creation timestamp for the CartItem.
+After that, the simulate session part of the tests was causing the test to fail, so I copied the [url](http://localhost:8000/?items=[{"price"%3A123%2C"expires"%3A"never"}%2C+{"price"%3A200%2C"expires"%3A"60min"}]) to the browser to figure out the problem. The error was on the "Cart" constructor, I changed the constructor in order to work. I had to do several changes in this class since the "$modifier" was not taken into consideration, so I developed two functions, one to extract the unit and value of the expired/available creation timestamp for the CartItem, I used StackOverflow to get and idea on how to extract the numbers/letters from the "$value" variable.
 
 And after that, I added an if statement on the template file of the CartItem to be able to show different messages in case the item mode is MODE_NO_LIMIT.
 
+### Installation
+
+The instructions to install the project are the following:
+
+1. Ensure that composer is globally available on the machine.
+2. Ensure that PHP version 7.4. is in use.
+3. Install composer dependencies: "composer install".
+4. Start the application by running the command "php -S localhost:8000 -t public", the application can be accessed through http://localhost:8000/.
+
+### Running the tests
+
+To run the unit tests, there were 2 possibilities.
+
+- They can be run directly in the IDE by configuring the tests runnable engine and pressing play in each test or folder that we want to test.
+
+- Run the command "vendor/bin/phpunit tests/unit" to run all the unit tests.
+
+To run the functional tests, it is needed to run:
+
+1. "php vendor/bin/codecept build" This command builds the classes required to run the tests in the current project installation; this command is only needed for the first time.
+2. "php vendor/bin/codecept run —steps" to run the tests. The command "php vendor/bin/codecept run --steps --debug" can be run if we want a more accurate debug analysis.
