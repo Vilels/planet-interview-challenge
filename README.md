@@ -27,8 +27,8 @@ First of all, I will create a plan to track the objectives I want to achieve.
 **Plan:**
 - **Analyze the project:** identifying the structure, core concepts, and main files of the project. 
 - **Set up the project:** Install the project on my machine and all its dependencies. 
-- **Fix the tests:** Changing the tests and the related application code for making the tests pass. 
-- **Refactoring:** Trying to identify classes or functions where the code can be refactored, making it more presentable or up-to-date. 
+- **Fix the tests:** Changing the tests and the related application code for making the tests to pass. 
+- **Refactoring:** Trying to identify classes or functions where the code can be refactored, making it more presentable and up-to-date. 
 - **Documentation:** Adding instructions on how to run the application and tests.
 
 ### Project resume
@@ -79,19 +79,19 @@ This class has only one test function. The test wasn't passing since the last as
 
 After analyzing how the "$modifier" parameter works on the "CartItem" class and the "is_available()" method, I started to get some doubts.
 
-- The class CartItem suggests a product is available when the "expires" time is less than the current time, so time needs to pass to a product being available.
-- The test case also suggests the same approach since the third object created is excepted to not being available for the first 59 seconds and supposed to be at 60 seconds.
+- The class CartItem suggests that a item is available when the "expires" time is less than the current time, so time needs to pass to a product being available.
+- The test case also suggests the same approach since the third object created is excepted to not being available for the first 59 seconds and supposed to be at 60 seconds or above that.
 
 > [!NOTE]
 >
-> Since both classes suggest the same, I assumed that the "CartItem" "$expires" variable defines the time that the product becomes available. In a real case scenario, I would try to talk to the team and know if I was right or not. My initial thoughts were that the "$expires" variable defined the exact time that the product becomes available.
+> Since both classes suggest the same, I assumed that the "CartItem" "$expires" variable defines the time that the product becomes available. In a real case scenario, I would try to talk to the team and know if I was right or not. My initial thoughts were that the "$expires" variable defined the exact time that the product becomes available but I opted for the suggestions given by the test and class mentioned.
 
 Since the variable names didn't make much sense for the suggestions of the classes, I started to do some refactoring in the "CartItem" class.
 
 - Added the missing break statement at "CartItem" class constructor.
 - Changed "$expires" to "$available_at".
-- Changed "available_at()" to "availableAt()" to follow PHP best practices.
-- And "gestState()", "display()" and the template file to start using the new "$available_at" variable.
+- Changed "available_at()" to "availableAt()" to follow PHP best practices and added changed the comparison from "<" to "<="
+- And changed the "gestState()", "display()" functions and the template file to start using the new "$available_at" variable.
 
 After these changes and after changing the test to use the new method name, the test passed.
 
@@ -105,11 +105,11 @@ I used the JSON default convention to name the variable in the template section.
 
 The single functional test presented was written with codeception. I never worked with codeception, but the test seems very intuitive.
 
-I started by reading the [codeception documentation](https://codeception.com/docs/GettingStarted). When I tried to run the command "php vendor/bin/codecept run --steps" I got an error caused by the written tests because the "FunctionalTester" class was missing. After googling, I found a suggestion at [StackOverflow](https://stackoverflow.com/questions/36322580/symfony-codeception-run-errors) to run the "codecept build" command.
+I started by reading the [codeception documentation](https://codeception.com/docs/GettingStarted). When I tried to run the command "php vendor/bin/codecept run --steps" I got an error caused by the written test because the "FunctionalTester" class was missing. After googling, I found a suggestion at [StackOverflow](https://stackoverflow.com/questions/36322580/symfony-codeception-run-errors) to run the "codecept build" command.
 
 So after running the "php vendor/bin/codecept build" command, the file was generated, and I was able to run the test.
 
-Firstly, the error was on the line "$I->see('Cart (0 items):');". I was not understanding what could be doing this, since when I accessed the index page I could see the expected tests. I then ran the test in debug mode "php vendor/bin/codecept run --steps --debug" and found that the tests weren't able to access the index page since the request was returning a 404 error.
+Firstly, the error was on the line "$I->see('Cart (0 items):');". I was not understanding what could be causing this, since when I accessed the index page I could see the expected tests. I then ran the test in debug mode "php vendor/bin/codecept run --steps --debug" and found that the tests weren't able to access the index page since the request was returning a 404 error.
 
 After a quick analysis, I found that the problem was with the test configuration .yml file, the configuration was intended to use "http://127.0.0.1:80" as the default application url, since I was serving the application through port 8000 instead of 80, I changed the configuration file.
 
