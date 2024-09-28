@@ -138,3 +138,9 @@ To run the functional tests, it is needed to run:
 
 1. "php vendor/bin/codecept build" This command builds the classes required to run the tests in the current project installation; this command is only needed for the first time.
 2. "php vendor/bin/codecept run —steps" to run the tests. The command "php vendor/bin/codecept run --steps --debug" can be run if we want a more accurate debug analysis.
+
+### Conclusion
+
+I was able to make all the tests pass. I am with several doubts about the availability of the "CartItem" class, as already mentioned above, in a real-case scenario, I would ensure that my thoughts were correct before making these assumptions.
+
+The fact that I wasn't familiar with the Smarty template engine and Codeception test framework was not a problem, since they were very intuitive and had good online documentation.
