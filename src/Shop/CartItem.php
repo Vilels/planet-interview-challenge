@@ -18,31 +18,32 @@ class CartItem extends Exception
 
 		protected bool $smartySetup = false;
 
-		private int $expires;
+		private int $available_at;
 
 		private int $price;
 
 		public function __construct(int $price, $mode, $modifier = null)
 		{
 		    switch ($mode) {
-		    case self::MODE_NO_LIMIT:
-		        $this->expires = -2;
-		        break;
-		    case self::MODE_HOUR:
-		        $this->expires = strtotime('+1 hour');
-		    case self::MODE_MINUTE:
-		        $this->expires = strtotime('+' . $modifier . ' minutes');
-		        break;
-		    case self::MODE_SECONDS:
-		        $this->expires = strtotime('+' . $modifier . ' seconds');
-		        break;
+                case self::MODE_NO_LIMIT:
+                    $this->available_at = -2;
+                    break;
+                case self::MODE_HOUR:
+                    $this->available_at = strtotime('+1 hour');
+                    break;
+                case self::MODE_MINUTE:
+                    $this->available_at = strtotime('+' . $modifier . ' minutes');
+                    break;
+                case self::MODE_SECONDS:
+                    $this->available_at = strtotime('+' . $modifier . ' seconds');
+                    break;
 		    }
 		    $this->price = $price;
 		}
 
-		public function is_available(): ?bool
+		public function isAvailable(): ?bool
 		{
-		    return $this->expires < time();
+		    return $this->available_at <= time();
 		}
 
        /**
@@ -53,16 +54,13 @@ class CartItem extends Exception
         */
 		public function getState(): string
 		{
-		    return '{"price":' . $this->price . ',"expires":'.$this->expires.'}';
+		    return '{"price":' . $this->price . ',"availableAt":'.$this->available_at.'}';
 		}
 
 		public function display(): string
-
-
-
 		{
 		    App::smarty()->assign('price', $this->price);
-		    App::smarty()->assign('expires', $this->expires);
+		    App::smarty()->assign('availableAt', $this->available_at);
 
 		    return App::smarty()->fetch('shop/CartItem.tpl');
 		}

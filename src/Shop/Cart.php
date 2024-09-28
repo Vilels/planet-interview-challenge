@@ -39,7 +39,7 @@ class Cart
     public function addItem(CartItem $cartItem): ?bool
     {
         try {
-            $cartItem->is_available();
+            $cartItem->isAvailable();
             $this->items[] = $cartItem;
             return true;
         } catch (Throwable|Exception $e) {

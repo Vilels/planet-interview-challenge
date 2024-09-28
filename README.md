@@ -71,4 +71,33 @@ Firstly I start the exercise by making a quick analysis of the project with the 
 
 #### Unit tests
 
+To run the unit tests I used PhpStorm run functionality.
+
 ##### CartItemTest
+
+This class has only one test function. The test wasn't passing since the last assertion wasn't correct.
+
+After analyzing how the "$modifier" parameter works on the "CartItem" class and the "is_available()" method, I started to get some doubts.
+
+- The class CartItem suggests a product is available when the "expires" time is less than the current time, so time needs to pass to a product being available.
+- The test case also suggests the same approach since the third object created is excepted to not being available for the first 59 seconds and supposed to be at 60 seconds.
+
+> [!NOTE]
+>
+> Since both classes suggest the same, I assumed that the "CartItem" "$expires" variable defines the time that the product becomes available. In a real case scenario, I would try to talk to the team and know if I was right or not. My initial thoughts were that the "$expires" variable defined the exact time that the product becomes available.
+
+Since the variable names didn't make much sense for the suggestions of the classes, I started to do some refactoring in the "CartItem" class.
+
+- Added the missing break statement at "CartItem" class constructor.
+- Changed "$expires" to "$available_at".
+- Changed "available_at()" to "availableAt()" to follow PHP best practices.
+- And "gestState()", "display()" and the template file to start using the new "$available_at" variable.
+
+After these changes and after changing the test to use the new method name, the test passed.
+
+##### CartTest
+
+
+
+
+

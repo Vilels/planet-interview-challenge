@@ -3,3 +3,5 @@
 /tmp
 /.idea
 /.phpunit.result.cache
+/tests/_output
+/tests/Support/_generated

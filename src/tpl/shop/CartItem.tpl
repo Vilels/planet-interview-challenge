@@ -1,2 +1,2 @@
-{$price} (expires {$expires|format_date:"c"})
+{$price} (expires {$available_at|format_date:"c"})
 

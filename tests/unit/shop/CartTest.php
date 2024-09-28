@@ -18,7 +18,7 @@ class CartTest extends \PHPUnit\Framework\TestCase
         $expected = [
             (object)[
                 'price'   => 12300,
-                'expires' => -2,
+                'availableAt' => -2,
             ]
         ];
         $this->assertEquals(1, count(json_decode($state)));
